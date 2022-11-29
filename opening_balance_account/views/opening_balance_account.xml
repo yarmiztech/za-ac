@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="opening_balance_treeview" model="ir.ui.view">
+        <field name="name">opening.balance.account.form</field>
+        <field name="model">opening.balance.account.form</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date"/>
+                <field name="company_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="opening_balance_formview" model="ir.ui.view">
+        <field name="name">opening.balance.account.form</field>
+        <field name="model">opening.balance.account.form</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar"/>
+                    <button name="post"
+                            string="Post" type="object" class="btn-primary"
+                            attrs="{'invisible':[('state','=','post')]}"/>
+
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="date" required="1"/>
+                            <field name="account_id"/>
+                        </group>
+                        <group>
+                            <field name="company_id" readonly="1"/>
+                            <field name="journal_id" readonly="1" attrs="{'invisible':[('state','!=','post')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Accounts">
+                            <field name="open_account_lines">
+                                <tree editable="bottom">
+                                    <field name="account_id"/>
+                                    <field name="debit"/>
+                                    <field name="credit"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="opening_balance_account_action" model="ir.actions.act_window">
+        <field name="name">Opening Balance</field>
+        <field name="res_model">opening.balance.account.form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                NO Opening Balance!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="opening_balance_account_menu" parent="account.account_account_menu"
+              action="opening_balance_account_action"
+              sequence="1" name="Opening Balance Account"/>
+
+</odoo>
